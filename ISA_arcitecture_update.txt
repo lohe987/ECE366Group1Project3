@@ -1,0 +1,45 @@
+Instruction:	Encoding:	Functionality:			Range:
+LOAD Rd, Rs	x 1010 dd a	$Rd = MEM[$Rs]			Rd{R0-R3}
+				PC = PC + 1			Rs{R0, R1}
+
+STR Rd, Rs	x 1011 dd a	MEM[$Rs] = $Rd			Rd{R0-R3}
+				PC = PC + 1			Rs{R0, R1}
+
+COMP Rd	x 11011 dd	$Rd = -$Rd = 2's complement	Rd{R0-R3}
+				PC = PC + 1
+
+ADDI Rd, imm	x 001 dd ii	$Rd = $Rd + imm			Rd{R0-R3}
+				PC = PC + 1			imm[-2,1]				
+
+ADD Rd, Rs	x 000 dd ss	$Rd = $Rd + $Rs			Rd,Rs{R0-R3}
+				PC = PC + 1
+					
+SLT Rd, Rs	x 010 dd ss	if $Rd < $Rs then $branch = 1,	Rd,Rs{R0-R3}
+				else $branch = 0
+				PC = PC + 1	
+
+EQZ Rd		x 11010 dd	if $Rd == 0 then $branch = 1,	Rd{R0-R3}
+				else $branch = 0
+				PC = PC + 1
+
+B imm		x 100 iiii	if $branch = 1 then PC = PC+imm imm[-8,7]
+				else PC = PC + 1
+
+J imm		x 011 iiii	PC = PC + imm			imm[-8,7]
+
+LSL Rd		x 11000 dd	$Rd = $Rd << 1			Rd{R0-R3}
+				PC = PC + 1
+
+NXOR Rd, Rs	x 11001 d a	$Rd = $Rd bitwise not xor $Rs	Rd,Rs{R0,R1}
+				PC = PC + 1
+			
+STSH Rd	x 11110 dd	$SRd = $Rd for d{0-3}		Rd{R0-R3}
+				PC = PC + 1
+
+RCVR Rd	x 11100	dd	$Rd = $SRd for d{0-3}		Rd{R0-R3}
+				PC = PC + 1
+
+RST Rd		x 11101 	$Rd = 0				Rd{R0-R3}
+				PC = PC + 1
+
+END		11111111	PC = PC
