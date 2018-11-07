@@ -277,7 +277,7 @@ def main():
 
     # Choose Pattern (i.e. which data memory to use)
     print("Choose Pattern/Data Memory used for the simulation")
-    print("(i.e. patternA.txt)")
+    print("(i.e. p3_group_1_dmem_D.txt)")
 
     while (True):
         filename = input("Data Memory Filename: ")
@@ -372,8 +372,17 @@ def main():
     Update_Data_Mem_File(data, filename)
     # Summary
     print("---Summary of Execution---------------------")
-    print("Dynamic Instruction Count For Program 1: {} instructions".format(instr_count_1))
-    print("Dynamic Instruction Count For Program 2: {} instructions".format(instr_count_2))
+    print("Using Data Memory from " + filename)
+    print("Data Memory Content:")
+    print("\tData Memory[0]: " + data[0])
+    print("\tData Memory[1]: " + data[1])
+    print("\tData Memory[2]: " + data[2])
+    print("\tData Memory[3]: " + data[3])
+    print("\tData Memory[4]: " + data[4])
+    print("\tData Memory[5]: " + data[5])
+    print("Dynamic Instruction Count:")
+    print("\tProgram 1: {} instructions".format(instr_count_1))
+    print("\tProgram 2: {} instructions".format(instr_count_2))
     print("---End of Summary---------------------------")
 
     return
