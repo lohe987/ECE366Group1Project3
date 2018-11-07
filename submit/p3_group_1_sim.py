@@ -63,20 +63,20 @@ def Instruction_Execute( instr, register, data ):
     if (instr[1:4] == '000'):
         Rd = int(instr[4:6], base=2)
         Rs = int(instr[6:8], base=2)
-        print('ADD R{}, R{}'.format(Rd, Rs))
+        print('ADD $R{}, $R{}'.format(Rd, Rs))
         Instr_ADD(Rd, Rs, register)
 
     elif (instr[1:4] == '001'):
         Rd = int(instr[4:6], base=2)
         imm = int(instr[6:8], base=2)
         imm = imm - ((imm << 1) & (2**2))
-        print('ADDI R{}, {}'.format(Rd, imm))
+        print('ADDI $R{}, {}'.format(Rd, imm))
         Instr_ADDI(Rd, imm, register)
 
     elif (instr[1:4] == '010'):
         Rd = int(instr[4:6], base=2)
         Rs = int(instr[6:8], base=2)
-        print('SLT R{}, R{}'.format(Rd, Rs))
+        print('SLT $R{}, $R{}'.format(Rd, Rs))
         Instr_SLT(Rd, Rs, register)
     
     elif (instr[1:4] == '100'):
@@ -96,24 +96,24 @@ def Instruction_Execute( instr, register, data ):
     elif (instr[1:5] == '1010'):
         Rd = int(instr[5:7], base=2)
         Rs = int(instr[7], base=2)
-        print('LOAD R{}, R{}'.format(Rd, Rs))
+        print('LOAD $R{}, $R{}'.format(Rd, Rs))
         Instr_LOAD(Rd, Rs, register, data)
     
     elif (instr[1:5] == '1011'):
         Rd = int(instr[5:7], base=2)
         Rs = int(instr[7], base=2)
-        print('STR R{}, R{}'.format(Rd, Rs))
+        print('STR $R{}, $R{}'.format(Rd, Rs))
         Instr_STR(Rd, Rs, register, data)
     
     elif (instr[1:6] == '11000'):
         Rd = int(instr[6:8], base=2)
-        print('LSL R{}'.format(Rd))
+        print('LSL $R{}'.format(Rd))
         Instr_LSL(Rd, register)
     
     elif (instr[1:6] == '11001'):
         Rd = int(instr[6], base=2)
         Rs = int(instr[7], base=2)
-        print('NXOR R{}, R{}'.format(Rd, Rs))
+        print('NXOR $R{}, $R{}'.format(Rd, Rs))
         print(register[Rd])
         print(register[Rs])
         Instr_NXOR(Rd, Rs, register)
@@ -121,27 +121,27 @@ def Instruction_Execute( instr, register, data ):
     
     elif (instr[1:6] == '11010'):
         Rd = int(instr[6:8], base=2)
-        print('EQZ R{}'.format(Rd))
+        print('EQZ $R{}'.format(Rd))
         Instr_EQZ(Rd, register)
     
     elif (instr[1:6] == '11011'):
         Rd = int(instr[6:8], base=2)
-        print('COMP R{}'.format(Rd))
+        print('COMP $R{}'.format(Rd))
         Instr_COMP(Rd, register)
     
     elif (instr[1:6] == '11101'):
         Rd = int(instr[6:8], base=2)
-        print('RST R{}'.format(Rd))
+        print('RST $R{}'.format(Rd))
         Instr_RST(Rd, register)
     
     elif (instr[1:6] == '11100'):
         Rd = int(instr[6:8], base=2)
-        print('RCVR R{}'.format(Rd))
+        print('RCVR $R{}'.format(Rd))
         Instr_RCVR(Rd, register)
     
     elif (instr[1:6] == '11110'):
         Rd = int(instr[6:8], base=2)
-        print('STSH R{}'.format(Rd))
+        print('STSH $R{}'.format(Rd))
         Instr_STSH(Rd, register)
     
     elif (instr[1:8] == '1111111'):
@@ -319,11 +319,15 @@ def main():
 
     # Run Program 1
     end_of_program = False
+    instr_count_1 = 0;
+    print("Start of Program 1 Execution")
     while (not end_of_program):
         # Fetch instruction and update PC
         PC = int(register[9], base=2)
         instr =  instructions[PC][0:len(instructions[PC]) - 1]
         end_of_program = Instruction_Execute(instr, register, data)
+        instr_count_1 = instr_count_1 + 1
+    print("End of Program 1 Execution")
 
     print("\n")
     register = Initialize_Registers()
@@ -337,14 +341,17 @@ def main():
 
     # Run Program 2
     end_of_program = False
+    instr_count_2 = 0;
     #i = 1
+    print("Start of Program 2 Execution")
     while (not end_of_program):
         # Fetch instruction and update PC
         PC = int(register[9], base=2)
         instr =  instructions[PC][0:len(instructions[PC]) - 1]
         end_of_program = Instruction_Execute(instr, register, data)
-        r0 = int(register[0], base=2)
-        r0 = r0 - ((r0 << 1) & (2**16))
+        instr_count_2 = instr_count_2 + 1
+        #r0 = int(register[0], base=2)
+        #r0 = r0 - ((r0 << 1) & (2**16))
         #print("r0 = {}".format(r0))
         #print("r0 = " + register[0])
         #print("r1 = {}".format(int(register[1], base=2)))
@@ -357,13 +364,18 @@ def main():
         #print("instr: " + instr)
         #print("instr: {}\n".format(i))
         #i = i + 1
+    print("End of Program 2 Execution\n")
 
     # Update registers
     Update_Reg_File(register)
     # Update Data Memory File/Pattern
     Update_Data_Mem_File(data, filename)
+    # Summary
+    print("---Summary of Execution---------------------")
+    print("Dynamic Instruction Count For Program 1: {} instructions".format(instr_count_1))
+    print("Dynamic Instruction Count For Program 2: {} instructions".format(instr_count_2))
+    print("---End of Summary---------------------------")
 
-    print("Complete")
     return
 
 
